@@ -11,5 +11,6 @@ coverage/
 test/
 logs/
 docs/
+jsdoc.json
 *.sw*
 *.un~
