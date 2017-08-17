@@ -66,4 +66,4 @@ co(function *() {
 ```
 
 - [sample](//github.com/macaca-sample/sample-nodejs)
-- [More API](//macacajs.github.io/macaca-puppeteer)
+- [More API](//macacajs.github.io/macaca-puppeteer/)
