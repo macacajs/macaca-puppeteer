@@ -17,7 +17,7 @@
 [node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 
-> macaca puppeteer driver
+> [Puppeteer](//github.com/GoogleChrome/puppeteer) is a Node library which provides a high-level API to control headless Chrome over the DevTools Protocol. It can also be configured to use full (non-headless) Chrome.
 
 ## Installment
 
@@ -25,11 +25,45 @@
 $ npm i macaca-puppeteer -g
 ```
 
-## Standalone usage
+## Usage as module
 
 ``` javascript
 
+const co = require('co');
+const fs = require('fs');
+const path = require('path');
+const Puppeteer = require('macaca-puppeteer');
 
+const puppeteer = new Puppeteer();
+
+co(function *() {
+  /**
+    default options
+    {
+      show: true,
+      x: 0,
+      y: 0,
+      width: 800,
+      height: 600,
+      userAgent: 'userAgent string'
+    }
+  */
+  yield puppeteer.startDevice({
+    show: false // in silence
+  });
+
+  yield puppeteer.maximize();
+  yield puppeteer.setWindowSize(null, 500, 500);
+  yield puppeteer.get('https://www.baidu.com');
+  const imgData = yield puppeteer.getScreenshot();
+  const img = new Buffer(imgData, 'base64');
+  const p = path.join(__dirname, '..', 'screenshot.png')
+  fs.writeFileSync(p, img.toString('binary'), 'binary');
+  console.log(`screenshot: ${p}`);
+
+  yield puppeteer.stopDevice();
+});
 ```
 
-- [More API](//macacajs.github.io/macaca-puppeteer/)
+- [sample](//github.com/macaca-sample/sample-nodejs)
+- [More API](//macacajs.github.io/macaca-puppeteer)
