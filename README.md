@@ -14,7 +14,7 @@
 [travis-url]: https://travis-ci.org/macacajs/macaca-puppeteer
 [coveralls-image]: https://img.shields.io/coveralls/macacajs/macaca-puppeteer.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/macacajs/macaca-puppeteer?branch=master
-[node-image]: https://img.shields.io/badge/node.js-%3E=_4-green.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 
 > macaca puppeteer driver
