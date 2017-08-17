@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Document 1</title>
+    <style>
+    #button-1 {
+      padding: 5px 10px;
+      border: 1px solid #09f;
+      background: rgb(255, 255, 255);
+    }
+    </style>
+  </head>
+  <body>
+    <input id="input">
+    <button id="button-1">create dom</button>
+    <br>
+    <a id="link-1" href="2.html">new page</a>
+    <br>
+    <a id="link-2" target="_blank" href="3.html">open new page</a>
+
+    <div id="target"></div>
+    <script>
+document.querySelector('#button-1').addEventListener('click', function() {
+  document.querySelector('#target').innerHTML = document.querySelector('#input').value;
+}, false);
+    </script>
+  </body>
+</html>
