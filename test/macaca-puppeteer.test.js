@@ -21,7 +21,7 @@ describe('unit testing', function() {
 
     before(function *() {
       yield driver.startDevice({
-        show: true,
+        show: false,
         userAgent: customUserAgent
       });
     });
