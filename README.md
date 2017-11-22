@@ -21,13 +21,13 @@
 
 ## Installment
 
-``` bash
+```bash
 $ npm i macaca-puppeteer -g
 ```
 
 ## Usage as module
 
-``` javascript
+```javascript
 
 const co = require('co');
 const fs = require('fs');
