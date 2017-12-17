@@ -3,6 +3,7 @@ node_js:
   - 8
 sudo: false
 script:
-  - make travis
+  - npm i
+  - npm run ci
 after_script:
   - npm install coveralls@2 && cat ./coverage/lcov.info | coveralls
