@@ -1,6 +1,6 @@
 {
   "name": "macaca-puppeteer",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "macaca puppeteer driver",
   "keywords": [
     "puppeteer",
@@ -12,37 +12,36 @@
     "url": "git://github.com/macacajs/macaca-puppeteer.git"
   },
   "dependencies": {
-    "co": "^4.6.0",
     "driver-base": "^0.1.0",
     "macaca-utils": "~1.0.0",
-    "puppeteer": "^0.12.0",
+    "puppeteer": "2",
     "selenium-atoms": "~1.0.1",
     "webdriver-dfn-error-code": "^1.0.3",
     "xlogger": "^1.0.0"
   },
   "devDependencies": {
-    "co-mocha": "^1.1.2",
-    "istanbul": "*",
+    "eslint": "^6.8.0",
+    "eslint-plugin-mocha": "^6.2.2",
+    "git-contributor": "1",
+    "husky": "^4.0.10",
     "jsdoc": "^3.4.0",
-    "jshint": "*",
     "minami": "^1.1.1",
     "mocha": "*",
-    "pre-commit": "*",
-    "should": "*",
+    "nyc": "^13.1.0",
     "startserver": "^1.2.3"
   },
   "scripts": {
-    "test": "istanbul cover `npm bin`/_mocha",
-    "lint": "jshint .",
+    "test": "nyc --reporter=lcov --reporter=text mocha",
+    "lint": "eslint --fix lib test",
     "clean": "rm -rf ./docs",
     "doc": "npm run clean && jsdoc -c ./jsdoc.json",
-    "ci": "npm run lint && npm run test"
+    "ci": "npm run lint && npm run test",
+    "contributor": "git-contributor"
   },
-  "pre-commit": [
-    "lint"
-  ],
-  "engines": {
-    "node": ">=8.0.0"
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "homepage": "https://github.com/macacajs/macaca-puppeteer",
   "license": "MIT"

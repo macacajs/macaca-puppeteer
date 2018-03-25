@@ -17,7 +17,7 @@
 [node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 
-> [Puppeteer](//github.com/GoogleChrome/puppeteer) is a Node library which provides a high-level API to control headless Chrome over the DevTools Protocol. It can also be configured to use full (non-headless) Chrome.
+> [Puppeteer](//github.com/GoogleChrome/puppeteer) is a Node library which provides a high-level API to control headless Chrome over the DevTools Protocol. It can also be configured to use full (non-headless) Chrome. Macaca Puppeteer is a long-term maintained browser driver as a candidate for Macaca Electron driver.
 
 ## Installment
 
@@ -28,15 +28,13 @@ $ npm i macaca-puppeteer -g
 ## Usage as module
 
 ```javascript
-
-const co = require('co');
 const fs = require('fs');
 const path = require('path');
 const Puppeteer = require('macaca-puppeteer');
 
 const puppeteer = new Puppeteer();
 
-co(function *() {
+async function() {
   /**
     default options
     {
@@ -48,22 +46,34 @@ co(function *() {
       userAgent: 'userAgent string'
     }
   */
-  yield puppeteer.startDevice({
+  await puppeteer.startDevice({
     show: false // in silence
   });
 
-  yield puppeteer.maximize();
-  yield puppeteer.setWindowSize(null, 500, 500);
-  yield puppeteer.get('https://www.baidu.com');
-  const imgData = yield puppeteer.getScreenshot();
+  await puppeteer.maximize();
+  await puppeteer.setWindowSize(null, 500, 500);
+  await puppeteer.get('https://www.baidu.com');
+  const imgData = await puppeteer.getScreenshot();
   const img = new Buffer(imgData, 'base64');
   const p = path.join(__dirname, '..', 'screenshot.png')
   fs.writeFileSync(p, img.toString('binary'), 'binary');
   console.log(`screenshot: ${p}`);
 
-  yield puppeteer.stopDevice();
-});
+  await puppeteer.stopDevice();
+};
 ```
 
 - [sample](//github.com/macaca-sample/sample-nodejs)
 - [More API](//macacajs.github.io/macaca-puppeteer/)
+
+<!-- GITCONTRIBUTOR_START -->
+
+## Contributors
+
+|[<img src="https://avatars1.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>
+| :---: |
+
+
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor.git), auto upated at `Sun Mar 25 2018 16:05:18 GMT+0800`.
+
+<!-- GITCONTRIBUTOR_END -->
