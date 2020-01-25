@@ -1,4 +1,4 @@
-# Contributing to macaca-electron
+# Contributing to macaca-puppeteer
 
 We love pull requests from everyone.
 
@@ -12,7 +12,7 @@ Set up your machine:
 
 Then make your change and make sure the tests pass:
 
-    make test
+    npm run test
 
 Push to your fork and [submit a pull request][pr].
 
