@@ -38,7 +38,7 @@ async function() {
   /**
     default options
     {
-      show: true,
+      headless: false,
       x: 0,
       y: 0,
       width: 800,
@@ -47,7 +47,7 @@ async function() {
     }
   */
   await puppeteer.startDevice({
-    show: false // in silence
+    headless: true // in silence
   });
 
   await puppeteer.maximize();
