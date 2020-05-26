@@ -22,7 +22,7 @@ describe('unit testing', function() {
 
     before(async () => {
       await driver.startDevice({
-        headless: false,
+        headless: true,
         userAgent: customUserAgent
       });
     });
