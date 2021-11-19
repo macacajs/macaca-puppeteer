@@ -1,20 +1,19 @@
 # macaca-puppeteer
 
-[![Gitter Chat][gitter-image]][gitter-url]
+---
+
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
 [![node version][node-image]][node-url]
 
-[gitter-image]: https://img.shields.io/badge/GITTER-join%20chat-green.svg?style=flat-square
-[gitter-url]: https://gitter.im/alibaba/macaca
-[npm-image]: https://img.shields.io/npm/v/macaca-puppeteer.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/macaca-puppeteer.svg
 [npm-url]: https://npmjs.org/package/macaca-puppeteer
-[travis-image]: https://img.shields.io/travis/macacajs/macaca-puppeteer.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/macacajs/macaca-puppeteer.svg
 [travis-url]: https://travis-ci.org/macacajs/macaca-puppeteer
-[coveralls-image]: https://img.shields.io/coveralls/macacajs/macaca-puppeteer.svg?style=flat-square
+[coveralls-image]: https://img.shields.io/coveralls/macacajs/macaca-puppeteer.svg
 [coveralls-url]: https://coveralls.io/r/macacajs/macaca-puppeteer?branch=master
-[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node.js-%3E=_8-green.svg
 [node-url]: http://nodejs.org/download/
 
 > [Puppeteer](//github.com/GoogleChrome/puppeteer) is a Node library which provides a high-level API to control headless Chrome over the DevTools Protocol. It can also be configured to use full (non-headless) Chrome. Macaca Puppeteer is a long-term maintained browser driver as a candidate for Macaca Electron driver.
@@ -70,10 +69,10 @@ async function() {
 
 ## Contributors
 
-|[<img src="https://avatars1.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars1.githubusercontent.com/u/11460601?v=4" width="100px;"/><br/><sub><b>zivyangll</b></sub>](https://github.com/zivyangll)<br/>|
+|[<img src="https://avatars.githubusercontent.com/u/1011681?v=4" width="100px;"/><br/><sub><b>xudafeng</b></sub>](https://github.com/xudafeng)<br/>|[<img src="https://avatars.githubusercontent.com/u/11460601?v=4" width="100px;"/><br/><sub><b>zivyangll</b></sub>](https://github.com/zivyangll)<br/>|
 | :---: | :---: |
 
 
-This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Wed May 27 2020 23:12:08 GMT+0800`.
+This project follows the git-contributor [spec](https://github.com/xudafeng/git-contributor), auto updated at `Fri Nov 19 2021 19:26:42 GMT+0800`.
 
 <!-- GITCONTRIBUTOR_END -->
