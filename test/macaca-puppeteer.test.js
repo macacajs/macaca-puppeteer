@@ -17,13 +17,13 @@ describe('unit testing', function() {
 
   describe('methods testing', function() {
 
-    var driver = new Puppeteer();
-    var customUserAgent = 'custom userAgent';
+    const driver = new Puppeteer();
+    const customUserAgent = 'custom userAgent';
 
     before(async () => {
       await driver.startDevice({
         headless: true,
-        userAgent: customUserAgent
+        userAgent: customUserAgent,
       });
     });
 
