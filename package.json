@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "eslint": "7",
-    "eslint-plugin-mocha": "^6.2.2",
+    "eslint-config-egg": "^11.0.1",
     "git-contributor": "1",
     "husky": "^4.0.10",
     "jsdoc": "^3.4.0",
