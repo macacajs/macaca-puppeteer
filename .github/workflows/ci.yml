@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - '**'
+
+jobs:
+  Runner:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git Source
+        uses: actions/checkout@v3
+      
+      - name: Setup Docker
+        uses: docker-practice/actions-setup-docker@1.0.9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          npm i npm@6 -g
+          npm i
+
+      - name: Continuous integration
+        run: |
+          npm run lint
+          docker run -i --entrypoint=bash -v `pwd`:/root/tmp --rm macacajs/macaca-electron-docker-ubuntu -c "cd /root/tmp && ./test/ci.sh"
+
+      - name: Code coverage
+        uses: codecov/codecov-action@v3.0.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
