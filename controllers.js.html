@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>controllers.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-addCookie.html">addCookie</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-back.html">back</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-clearText.html">clearText</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-click.html">click</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-deleteAllCookies.html">deleteAllCookies</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-deleteCookie.html">deleteCookie</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-execute.html">execute</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-findElement.html">findElement</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-forward.html">forward</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-get.html">get</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-getAllCookies.html">getAllCookies</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-getComputedCss.html">getComputedCss</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-getNamedCookie.html">getNamedCookie</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-getProperty.html">getProperty</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-getScreenshot.html">getScreenshot</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-getSource.html">getSource</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-getText.html">getText</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-isDisplayed.html">isDisplayed</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-maximize.html">maximize</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-refresh.html">refresh</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-setFrame.html">setFrame</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-setValue.html">setValue</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-setWindowSize.html">setWindowSize</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-title.html">title</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-url.html">url</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">controllers.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+const { getByName: getAtom } = require('selenium-atoms');
+const { errors } = require('webdriver-dfn-error-code');
+
+const _ = require('./helper');
+const logger = require('./logger');
+
+const ELEMENT_OFFSET = 1000;
+
+const implicitWaitForCondition = function(func) {
+  return _.waitForCondition(func, this.implicitWaitMs);
+};
+
+const sendJSCommand = async function(atom, args, inDefaultFrame) {
+  const frames = !inDefaultFrame &amp;&amp; this.frame ? [ this.frame ] : [];
+  const atomScript = getAtom(atom);
+  let script;
+  if (frames.length) {
+    const elem = getAtom('get_element_from_cache');
+    const frame = frames[0];
+    script = `(function (window) { var document = window.document;
+      return (${atomScript}); })((${elem.toString('utf8')})(${JSON.stringify(frame)}))`;
+  } else {
+    script = `(${atomScript})`;
+  }
+  const command = `${script}(${args.map(JSON.stringify).join(',')})`;
+  const res = await this.page.evaluate(command);
+
+  if (res.value) {
+    return res.value;
+  }
+
+  try {
+    return JSON.parse(res).value;
+  } catch (e) {
+    return null;
+  }
+};
+
+const convertAtoms2Element = function(atoms) {
+  const atomsId = atoms &amp;&amp; atoms.ELEMENT;
+
+  if (!atomsId) {
+    return null;
+  }
+
+  const index = this.atoms.push(atomsId) - 1;
+
+  return {
+    ELEMENT: index + ELEMENT_OFFSET,
+  };
+};
+
+const convertElement2Atoms = function(elementId) {
+  if (!elementId) {
+    return null;
+  }
+
+  let atomsId;
+
+  try {
+    atomsId = this.atoms[parseInt(elementId, 10) - ELEMENT_OFFSET];
+  } catch (e) {
+    return null;
+  }
+
+  return {
+    ELEMENT: atomsId,
+  };
+};
+
+const findElementOrElements = async function(strategy, selector, ctx, many) {
+  let result;
+  const that = this;
+
+  const atomsElement = convertElement2Atoms.call(this, ctx);
+
+  try {
+    await implicitWaitForCondition.call(this, async function() {
+      result = await sendJSCommand.call(that, `find_element${many ? 's' : ''}`, [
+        strategy,
+        selector,
+        atomsElement,
+      ]);
+      return _.size(result) > 0;
+    });
+  } catch (err) {
+    result = [];
+  }
+
+  if (many) {
+    return result.map(convertAtoms2Element.bind(this));
+  }
+  if (!result || _.size(result) === 0) {
+    throw new errors.NoSuchElement();
+  }
+  return convertAtoms2Element.call(this, result);
+  
+};
+
+const controllers = {};
+
+/**
+ * Change focus to another frame on the page.
+ *
+ * @module setFrame
+ * @param {string} frame Identifier(id/name) for the frame to change focus to
+ * @return {Promise}
+ */
+controllers.setFrame = async function(frame) {
+  if (!frame) {
+    this.frame = null;
+    logger.debug('Back to default content');
+    return null;
+  }
+
+  if (frame.ELEMENT) {
+    const atomsElement = convertElement2Atoms.call(this, frame.ELEMENT);
+    const result = await sendJSCommand.call(this, 'get_frame_window', [ atomsElement ]);
+    logger.debug(`Entering into web frame: '${result.WINDOW}'`);
+    this.frame = result.WINDOW;
+    return null;
+  }
+  const atom = _.isNumber(frame) ? 'frame_by_index' : 'frame_by_id_or_name';
+  const result = await sendJSCommand.call(this, atom, [ frame ]);
+  if (!result || !result.WINDOW) {
+    throw new errors.NoSuchFrame();
+  }
+  logger.debug(`Entering into web frame: '${result.WINDOW}'`);
+  this.frame = result.WINDOW;
+  return null;
+  
+};
+
+/**
+ * Click on an element.
+ *
+ * @module click
+ * @return {Promise}
+ */
+controllers.click = async function(elementId) {
+  const atomsElement = convertElement2Atoms.call(this, elementId);
+  return await sendJSCommand.call(this, 'click', [ atomsElement ]);
+};
+
+/**
+ * Search for an element on the page, starting from the document root.
+ * @module findElement
+ * @param {string} strategy The type
+ * @param {string} using The locator strategy to use.
+ * @param {string} value The search target.
+ * @return {Promise.&lt;Element>}
+ */
+controllers.findElement = async function(strategy, selector, ctx) {
+  return await findElementOrElements.call(this, strategy, selector, ctx, false);
+};
+
+controllers.findElements = async function(strategy, selector, ctx) {
+  return await findElementOrElements.call(this, strategy, selector, ctx, true);
+};
+
+/**
+ * Returns the visible text for the element.
+ *
+ * @module getText
+ * @return {Promise.&lt;string>}
+ */
+controllers.getText = async function(elementId) {
+  const atomsElement = convertElement2Atoms.call(this, elementId);
+  return await sendJSCommand.call(this, 'get_text', [ atomsElement ]);
+};
+
+/**
+ * Clear a TEXTAREA or text INPUT element's value.
+ *
+ * @module clearText
+ * @return {Promise.&lt;string>}
+ */
+controllers.clearText = async function(elementId) {
+  const atomsElement = convertElement2Atoms.call(this, elementId);
+  return await sendJSCommand.call(this, 'clear', [ atomsElement ]);
+};
+
+/**
+ * Set element's value.
+ *
+ * @module setValue
+ * @param elementId
+ * @param value
+ * @return {Promise.&lt;string>}
+ */
+controllers.setValue = async function(elementId, value) {
+  const atomsElement = convertElement2Atoms.call(this, elementId);
+  await sendJSCommand.call(this, 'click', [ atomsElement ]);
+  return await sendJSCommand.call(this, 'type', [ atomsElement, value ]);
+};
+
+/**
+ * Determine if an element is currently displayed.
+ *
+ * @module isDisplayed
+ * @return {Promise.&lt;string>}
+ */
+controllers.isDisplayed = async function(elementId) {
+  const atomsElement = convertElement2Atoms.call(this, elementId);
+  return await sendJSCommand.call(this, 'is_displayed', [ atomsElement ]);
+};
+
+/**
+ * Get the value of an element's property.
+ *
+ * @module getProperty
+ * @return {Promise.&lt;string>}
+ */
+controllers.getProperty = async function(elementId, attrName) {
+  const atomsElement = convertElement2Atoms.call(this, elementId);
+  return await sendJSCommand.call(this, 'get_attribute_value', [
+    atomsElement,
+    attrName,
+  ]);
+};
+
+/**
+ * Get the current page title.
+ *
+ * @module title
+ * @return {Promise.&lt;Object>}
+ */
+controllers.title = async function() {
+  return await this.page.title();
+};
+
+/**
+ * Inject a snippet of JavaScript into the page for execution in the context of the currently selected frame.
+ *
+ * @module execute
+ * @param code script
+ * @param [args] script argument array
+ * @return {Promise.&lt;string>}
+ */
+controllers.execute = async function(script, args) {
+  if (!args) {
+    args = [];
+  }
+
+  // args = args.map(arg => {
+  //   if (arg.ELEMENT) {
+  //     return convertElement2Atoms.call(this, arg.ELEMENT);
+  //   } else {
+  //     return arg;
+  //   }
+  // });
+
+  const value = await sendJSCommand.call(this, 'execute_script', [
+    script,
+    args,
+  ], true);
+
+  if (Array.isArray(value)) {
+    return value.map(convertAtoms2Element.bind(this));
+  }
+  return value;
+  
+};
+
+/**
+ * Retrieve the URL of the current page.
+ *
+ * @module url
+ * @return {Promise.&lt;string>}
+ */
+controllers.url = async function() {
+  return await this.page.url();
+};
+
+/**
+ * Navigate to a new URL.
+ *
+ * @module get
+ * @param url get a new url.
+ * @return {Promise.&lt;string>}
+ */
+controllers.get = async function(url) {
+  this.frame = null;
+  await this.page.goto(url, {
+    waitUntil: 'load' || 'networkidle',
+  });
+  return null;
+};
+
+/**
+ * Navigate forwards in the browser history, if possible.
+ *
+ * @module forward
+ * @return {Promise.&lt;string>}
+ */
+controllers.forward = async function() {
+  this.frame = null;
+  await this.page.goForward();
+  return null;
+};
+
+/**
+ * Navigate backwards in the browser history, if possible.
+ *
+ * @module back
+ * @return {Promise.&lt;string>}
+ */
+controllers.back = async function() {
+  this.frame = null;
+  await this.page.goBack();
+  return null;
+};
+
+/**
+ * Get all window handlers.
+ *
+ * @module back
+ * @return {Promise}
+ */
+controllers.getWindows = async function() {
+  return await this.page.frames();
+};
+
+controllers.setWindow = async function() {
+  throw new errors.NotImplementedError();
+};
+
+/**
+ * Get the size of the specified window.
+ *
+ * @module setWindowSize
+ * @param [handle] window handle to set size for (optional, default: 'current')
+ * @return {Promise.&lt;string>}
+ */
+controllers.setWindowSize = async function(windowHandle, width, height) {
+  await this.page.setViewport({
+    width,
+    height,
+    hasTouch: true,
+    deviceScaleFactor: this.args.deviceScaleFactor || 1,
+  });
+  return null;
+};
+
+/**
+ * Maximize the specified window if not already maximized.
+ *
+ * @module maximize
+ * @param handle window handle
+ * @return {Promise.&lt;string>}
+ */
+controllers.maximize = async function(windowHandle) {
+  return await this.setWindowSize(windowHandle, 1280, 800);
+};
+
+/**
+ * Refresh the current page.
+ *
+ * @module refresh
+ * @return {Promise.&lt;string>}
+ */
+controllers.refresh = async function() {
+  this.frame = null;
+  return await this.page.reload();
+};
+
+/**
+ * Get the current page source.
+ *
+ * @module getSource
+ * @return {Promise.&lt;string>}
+ */
+controllers.getSource = async function() {
+  const cmd = 'return document.getElementsByTagName(\'html\')[0].outerHTML';
+  return await this.execute(cmd);
+};
+
+/**
+ * Take a screenshot of the current page.
+ *
+ * @module getScreenshot
+ * @return {Promise.&lt;string>} The screenshot as a base64 encoded PNG.
+ */
+controllers.getScreenshot = async function(context, params = {}) {
+  if (params.fullPage) {
+    params.fullPage = params.fullPage === 'true';
+  }
+  const image = await this.page.screenshot(Object.assign({
+    fullPage: true,
+  }, params));
+  const base64 = image.toString('base64');
+  return base64;
+  // let dir = path.join(process.cwd(), data.dir);
+  // _.mkdir(path.dirname(dir));
+  // fs.writeFileSync(dir, img.toString('binary'), 'binary');
+};
+
+/**
+ * Query the value of an element's computed CSS property.
+ *
+ * @module getComputedCss
+ * @return {Promise.&lt;string>}
+ */
+controllers.getComputedCss = async function(elementId, propertyName) {
+  return await this.execute('return window.getComputedStyle(arguments[0], null).getPropertyValue(arguments[1]);', [
+    convertElement2Atoms.call(this, elementId),
+    propertyName,
+  ]);
+};
+
+/**
+ * Returns all cookies associated with the address of the current browsing context’s active document.
+ *
+ * @module getAllCookies
+ * @return {Promise.&lt;string>}
+ */
+controllers.getAllCookies = async function() {
+  return await this.page.cookies();
+};
+
+/**
+ * Returns the cookie with the requested name from the associated cookies in the cookie store of the current browsing context’s active document. If no cookie is found, a no such cookie error is returned.
+ *
+ * @module getNamedCookie
+ * @return {Promise.&lt;string>}
+ */
+controllers.getNamedCookie = async function() {
+  return await this.page.cookies();
+};
+
+/**
+ * Adds a single cookie to the cookie store associated with the active document’s address.
+ *
+ * @module addCookie
+ * @return {Promise.&lt;string>}
+ */
+controllers.addCookie = async function(cookie) {
+  await this.page.setCookie(cookie);
+  return null;
+};
+
+/**
+ * Delete either a single cookie by parameter name, or all the cookies associated with the active document’s address if name is undefined.
+ *
+ * @module deleteCookie
+ * @return {Promise.&lt;string>}
+ */
+controllers.deleteCookie = async function(cookie) {
+  return await this.page.deleteCookie(cookie);
+};
+
+/**
+ * Delete All Cookies command allows deletion of all cookies associated with the active document’s address.
+ *
+ * @module deleteAllCookies
+ * @return {Promise.&lt;string>}
+ */
+controllers.deleteAllCookies = async function() {
+  return await this.page.deleteCookie();
+};
+
+module.exports = controllers;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Tue Apr 19 2022 15:14:20 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
